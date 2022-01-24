@@ -1,0 +1,45 @@
+﻿@using GridMvc.Html
+@model LongestCoWorkingPeriod.Models.PairDataModel
+@{
+    ViewBag.Title = "Home Page";
+}
+
+@using (Html.BeginForm("Index", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <input type="file" name="file" />
+    <input type="submit" value="Find Pair" />
+}
+<br>
+@if (ViewBag.ErrorInfo != null)
+{
+    <h4>@ViewBag.ErrorInfo</h4>
+}
+else if (Model != null)
+{
+    <h4>Longest working on common projects employees are @Model.FirstEmployeeId and @Model.SecondEmployeeId with total of @Model.TotalDays days! </h4>
+    <table class="table">
+        <tr>
+            <th>Employee ID #1</th>
+            <th>Employee ID #2</th>
+            <th>Project ID</th>
+            <th>Days</th>
+        </tr>
+        @foreach (var item in Model.ProjectPeriods)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(i => Model.FirstEmployeeId)
+                </td>
+                <td>
+                    @Html.DisplayFor(i => Model.SecondEmployeeId)
+                </td>
+                <td>
+                    @Html.DisplayFor(i => item.ProjectId)
+                </td>
+                <td>
+                    @Html.DisplayFor(i => (item.DateTo - item.DateFrom).Days)
+                </td>
+            </tr>
+        }
+    </table>
+}
