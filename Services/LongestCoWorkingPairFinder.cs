@@ -62,6 +62,7 @@ namespace LongestCoWorkingPeriod.Services
                 projectId = Int32.Parse(values[1].Trim());
                 dateFrom = DateTime.Parse(values[2].Trim()).Date;
                 dateTo = values[3].Trim() == "NULL" ? DateTime.UtcNow.Date : DateTime.Parse(values[3].Trim()).Date;
+                ValidateDates(dateFrom,dateTo);
             }
             catch
             {
@@ -69,6 +70,15 @@ namespace LongestCoWorkingPeriod.Services
             }
             return new EmploymentDataModel(employeeId, projectId, dateFrom, dateTo);
         }
+
+        private void ValidateDates(DateTime dateFrom, DateTime dateTo)
+        {
+            if (dateFrom > dateTo)
+            {
+                throw new Exception("Incorrect data!");
+            }
+        }
+
         private void PairUpEmployeesToFindMaxPeriod()
         {
             for (int i = 0; i < employmentData.Count - 1; i++)
